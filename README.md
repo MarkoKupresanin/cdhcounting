@@ -17,9 +17,9 @@ ___
 
 1. #### In your terminal/command prompt:
 > ### MacOS/Linux: 
-> #### ``pip3 install -r requirements.txt``
+> ``pip3 install -r requirements.txt``
 > ### Windows:
-> #### ``pip install -r requirements.txt``
+> ``pip install -r requirements.txt``
 
 2. #### Then start the bot with this command:
 > ### MacOS/Linux:
