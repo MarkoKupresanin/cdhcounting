@@ -1,4 +1,4 @@
-from os import name
+\from os import name
 import discord
 from discord.ext import commands
 from time import ctime, process_time
@@ -11,7 +11,7 @@ import asyncio
 import os
 import sqlite3
 
-from discord.ext.commands.core import check
+from discord.ext.commands.core import check, has_permissions
 from dotenv import load_dotenv
 from dotenv.main import resolve_variables
 load_dotenv()
@@ -128,13 +128,23 @@ def getFailBoolean(authorativeGuild):
     temp = settingsCursor.fetchone()
     return temp[0]
 
+def getTimesCounted(member_id):
+    countingCursor.execute(f'''
+    SELECT timesCounted FROM countingScoreboard
+    WHERE memberID={member_id}
+    ''')
+    temp = countingCursor.fetchone()
+    return temp[0]
+
 
 class counter(commands.Cog):
     def __init__(self, client):
         self.client = client
 
     @commands.command()
+    @commands.has_permissions(administrator=True)
     async def makeTable(self, ctx):
+        """Creates the database tables for the counting game."""
     # @commands.command()
     # async def makeTable(self, ctx):
     #     cursor.execute('''CREATE TABLE countingScoreboard (
@@ -151,8 +161,9 @@ class counter(commands.Cog):
             await ctx.send(e)
 
     @commands.command()
+    @commands.has_permissions(administrator=True)
     async def initializeGame(self, ctx, countingChannel=None):
-
+        """Initalizes the counting game."""
         if countingChannel == None:
             return await ctx.send("You have to specify the channel ID for the counting channel.")
         settingsCursor.execute(f'''
@@ -162,7 +173,9 @@ class counter(commands.Cog):
         await ctx.send("Counting game initialized. Default values have been set in the settings and can be changed with ``c!updateSettings``. To view default values, try ``c!showSettings``")
 
     @commands.command()
+    @commands.has_permissions(administrator=True)
     async def updateSettings(self, ctx, newID=None, failBool = None ,newAuthorLoss=None, newNumberLost=None, newProfit=None):
+        """Updates the settings of the counting game."""
         # first check if they are empty bcuz its gonna break if its empty
         if newID == None:
             return await ctx.send("you didnt say an id")
@@ -202,6 +215,7 @@ class counter(commands.Cog):
 
     @commands.command()
     async def showSettings(self, ctx):
+        """This command shows the current counting game settings."""
         settingsCursor.execute("SELECT * FROM serverSettings")
         rows = settingsCursor.fetchall()
         for row in rows:
@@ -222,14 +236,18 @@ class counter(commands.Cog):
         ''')
 
     @commands.command()
+    @commands.has_permissions(administrator=True)
     async def manuallyAddMember(self, ctx, userID=None):
+        """Manually add a member to the counting game."""
         if userID == None:
             return await ctx.send("need to say id")
         countingCursor.execute(f'''INSERT INTO countingScoreboard VALUES ({userID}, 0, 0)''')
         countingConnection.commit()
 
     @commands.command()
+    @commands.has_permissions(administrator=True)
     async def editPoints(self, ctx, userID=None, amt=None):
+        """Edits the points of a users account."""
         if userID == None:
             return await ctx.send('userid missing')
         if amt == None:
@@ -244,6 +262,7 @@ class counter(commands.Cog):
 
     @commands.command()
     async def showtable(self, ctx):
+        """Shows the database for the counting game."""
         countingCursor.execute("SELECT * FROM countingScoreboard")
         rows = countingCursor.fetchall()
         for row in rows:
@@ -251,12 +270,14 @@ class counter(commands.Cog):
 
     @commands.command()
     async def seePoints(self, ctx):
+        """See the amount of points you have in the counting game."""
         countingCursor.execute(f"SELECT * FROM countingScoreboard")
         urmom = countingCursor.fetchone()[1]
         await ctx.send(urmom)
 
     @commands.command()
     async def leaderboard(self, ctx):
+        """See the leaderboard for the counting game."""
         countingCursor.execute(f'''
         SELECT *
         FROM countingScoreboard''')
@@ -270,12 +291,12 @@ class counter(commands.Cog):
         leaderboardEmbed = discord.Embed(title="Chaotic Destiny Hosting | Top 10 Leaderboard:", color=discord.Color.dark_purple())
         for i, dontmind in enumerate(bestScore):
             theUser = await self.client.fetch_user([x[0] for x in santasBag][i])
-            leaderboardEmbed.add_field(name=f"{theUser}:", value=f"{[x[1] for x in santasBag][i]}", inline=False)
+            leaderboardEmbed.add_field(name=f"{theUser}:", value=f"Score: {[x[1] for x in santasBag][i]}\nTimes Counted: {getTimesCounted(theUser.id)}", inline=False)
 
 
-        #leaderboardEmbed.set_thumbnail(url=f"{ctx.guild.icon.url}")
+        leaderboardEmbed.set_thumbnail(url=f"{ctx.guild.icon_url}")
         leaderboardEmbed.timestamp = datetime.datetime.now()
-        #leaderboardEmbed.set_footer(icon_url=ctx.author.avatar.url, text=f"Requested by: {ctx.author.name}")
+        leaderboardEmbed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested by: {ctx.author.name}")
 
 
         await ctx.send(embed=leaderboardEmbed)
