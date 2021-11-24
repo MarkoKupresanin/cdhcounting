@@ -40,11 +40,12 @@ ___
 3. *Optional*: Configuring additional settings
 > Run ``c!updateSettings [newID] [failBool] [newAuthorLoss] [newNumberLoss] [newProfit]``
 > #### Parameter explanation:
-> * newID --> New counting channel ID, if you don't want to change this, put the same ID you are already using. 
-> * failBool --> Either true or false, true meaning the game will reset if someone messes up the count, false to continue the game after a fail.
-> * newAuthorLoss --> Integer value greater than 0, this is the amount of points which will be taken off if someone counts twice in a row.
-> * newNumberLoss --> Integer value greater than 0, this is the amount of points which will be taken off if someone counts the wrong number.
-> * newProfit --> Integer value greater than 0, this is the amount of points which will be added for a successful count.
+> * **newID** --> New counting channel ID, if you don't want to change this, put the same ID you are already using. 
+> * **failBool** --> Either true or false, true meaning the game will reset if someone messes up the count, false to continue the game after a fail.
+> * **newAuthorLoss** --> Integer value greater than 0, this is the amount of points which will be taken off if someone counts twice in a row.
+> * **newNumberLoss** --> Integer value greater than 0, this is the amount of points which will be taken off if someone counts the wrong number.
+> * **newProfit** --> Integer value greater than 0, this is the amount of points which will be added for a successful count.
 > **NOTE: If you wish to only change one setting, just fill in the other parameters with what you already have set up.**
+> *If you ever forget the current settings you have, just run ``c!showsettings``.*
 
 
