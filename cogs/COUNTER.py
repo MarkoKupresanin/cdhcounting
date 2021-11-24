@@ -1,4 +1,4 @@
-\from os import name
+from os import name
 import discord
 from discord.ext import commands
 from time import ctime, process_time
@@ -134,6 +134,14 @@ def getTimesCounted(member_id):
     WHERE memberID={member_id}
     ''')
     temp = countingCursor.fetchone()
+    return temp[0]
+
+def getCountingChannel(authorativeGuild):
+    settingsCursor.execute(f'''
+    SELECT countingChannel FROM serverSettings
+    WHERE serverID = {authorativeGuild}
+    ''')
+    temp = settingsCursor.fetchone()
     return temp[0]
 
 
@@ -378,6 +386,26 @@ class counter(commands.Cog):
             logNumber.write(str(msg.content))
         with open("PreviousAuthor.txt", "w") as logAuthor:
             logAuthor.write(str(msg.author.id))
+
+    @commands.Cog.listener()
+    async def on_message_delete(self, deleted_message):
+        countingChannelYay = getCountingChannel(deleted_message.guild.id)
+        if deleted_message.channel.id != countingChannelYay:
+            return
+        
+        deletedMessageID = deleted_message.id
+        deletedMessageContent =deleted_message.content
+
+        with open("PreviousNumber.txt", "r") as idk:
+            PrevNum = idk.read()
+
+        print(str("prevnum: ") + str(PrevNum))
+
+        if PrevNum == deletedMessageContent:
+            await deleted_message.channel.send(f"{deleted_message.author} deleted **{deletedMessageContent}**")
+
+        print(deletedMessageID)
+        print(deletedMessageContent)
 
 
 def setup(client):
