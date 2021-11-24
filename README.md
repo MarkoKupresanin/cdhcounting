@@ -39,7 +39,7 @@ ___
 > ``c!initializeGame [counting_channel_ID]``
 3. *Optional*: Configuring additional settings
 > Run ``c!updateSettings [newID] [failBool] [newAuthorLoss] [newNumberLoss] [newProfit]``
-> #### Parameter explanation:
+#### Parameter explanation:
 * **newID** --> New counting channel ID, if you don't want to change this, put the same ID you are already using. 
 * **failBool** --> Either true or false, true meaning the game will reset if someone messes up the count, false to continue the game after a fail.
 * **newAuthorLoss** --> Integer value greater than 0, this is the amount of points which will be taken off if someone counts twice in a row.
