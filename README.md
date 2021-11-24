@@ -17,7 +17,8 @@ ___
 
 1. #### In your terminal/command prompt:
 > ### MacOS/Linux: 
-> #### ``pip3 install -r requirements.txt``
+> #### ```shell
+> pip3 install -r requirements.txt```
 > ### Windows:
 > #### ``pip install -r requirements.txt``
 
