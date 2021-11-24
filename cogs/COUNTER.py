@@ -1,4 +1,4 @@
-from os import SEEK_CUR, name
+from os import name
 import discord
 from discord.ext import commands
 from time import ctime, process_time
