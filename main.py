@@ -46,6 +46,7 @@ async def on_ready():
         except:
             pass
     #client.unload_extension("cogs.PTEROCONTROL")
+    #client.load_extension('cogs.COUNTER')
     print(f"Currently in {len(client.guilds)} server(s)")
     print(f"{len(client.users)} users detected")
     print("Chaotic Destiny Counting is online.")
@@ -53,26 +54,38 @@ async def on_ready():
 @client.command()
 @commands.check(is_it_me)
 async def reload(ctx, extension):
-    workingCog = extension.upper()
-    client.unload_extension(f"cogs.{workingCog}")
-    client.load_extension(f"cogs.{workingCog}")
-    conf_Message = await ctx.send(f"The cog **{workingCog}** has been unloaded and reloaded.")
-    print(f"Unloaded and Loaded {workingCog}")
+    """This command reloads a specified cog."""
+    try:
+        workingCog = extension.upper()
+        client.unload_extension(f"cogs.{workingCog}")
+        client.load_extension(f"cogs.{workingCog}")
+        conf_Message = await ctx.send(f"The cog **{workingCog}** has been unloaded and reloaded.")
+        print(f"Unloaded and Loaded {workingCog}")
+    except Exception as e:
+        await ctx.send(e)
     
 @client.command()
 @commands.check(is_it_me)
 async def turnoff(ctx, extension):
-    workingCog = extension.upper()
-    client.unload_extension(f"cogs.{workingCog}")
-    conf_Message = await ctx.send(f"The cog **{workingCog}** has been disabled.")
+    """This command unloads a specified cog."""
+    try:
+        workingCog = extension.upper()
+        client.unload_extension(f"cogs.{workingCog}")
+        conf_Message = await ctx.send(f"The cog **{workingCog}** has been disabled.")
+    except Exception as e:
+        await ctx.send(e)
 
 @client.command()
 @commands.check(is_it_me)
 async def turnon(ctx, extension):
-    workingCog = extension.upper()
-    client.load_extension(f"cogs.{workingCog}")
-    conf_Message = await ctx.send(f"The cog **{workingCog}** has been enabled.")
-    await asyncio.sleep(3)
+    """This command loads a specified cog."""
+    try:
+        workingCog = extension.upper()
+        client.load_extension(f"cogs.{workingCog}")
+        conf_Message = await ctx.send(f"The cog **{workingCog}** has been enabled.")
+        await asyncio.sleep(3)
+    except Exception as e:
+        await ctx.send(e)
 
 
 client.run(DISCORD_BOT_TOKEN)
