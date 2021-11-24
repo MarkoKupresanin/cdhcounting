@@ -22,6 +22,7 @@ class util(commands.Cog):
     @commands.command()
     @commands.guild_only()
     async def serverinfo(self, ctx):
+        """Shows the basic server information of the server."""
         embed = discord.Embed(title=f"<:DiscordLogoEmote:855572468039286804> Server information for {ctx.guild.name}", color=ctx.author.color)
         embed.add_field(name=f"<:DiscordNameEmote:855575294629642310> Server Name:", value=f"{ctx.guild.name} ({ctx.guild.id})", inline=False)
         embed.add_field(name=f"<:DiscordDescriptionEmote:855575622649905202> Server Description:", value=f"{ctx.guild.description}", inline=False)
@@ -38,6 +39,7 @@ class util(commands.Cog):
 
     @commands.command()
     async def ping(self, ctx):
+        """This command shows the bot's latency."""
         latency=round(self.client.latency * 1000)
         await ctx.reply("Pong! "+"``"+str(latency) + "ms``", mention_author=False)
 
