@@ -399,13 +399,10 @@ class counter(commands.Cog):
         with open("PreviousNumber.txt", "r") as idk:
             PrevNum = idk.read()
 
-        print(str("prevnum: ") + str(PrevNum))
-
         if PrevNum == deletedMessageContent:
-            await deleted_message.channel.send(f"{deleted_message.author} deleted **{deletedMessageContent}**")
+            await deleted_message.channel.send(f"**{deleted_message.content}**, {deleted_message.author.mention}")
 
-        print(deletedMessageID)
-        print(deletedMessageContent)
+
 
 
 def setup(client):
